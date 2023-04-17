@@ -1,0 +1,5 @@
+name: ${project.name}
+description: ${project.description}
+main: ${project.bukkit.main}
+version: ${project.version}
+author: ${project.author}

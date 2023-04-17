@@ -1,0 +1,12 @@
+# Database configuration
+database:
+  # JDBC URL
+  url: "jdbc:mysql://localhost:3306/minecraft"
+  # MySQL username
+  username: "user"
+  # MySQL password
+  password: "password"
+  # Maximum number of connections in the connection pool
+  max-connections: 10
+  # Timezone of database
+  timezone: "America/Los_Angeles"
