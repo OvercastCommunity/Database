@@ -6,10 +6,27 @@ The **Database** plugin provides a seamless way to handle database credentials a
 
 To install the Database plugin, follow these steps:
 
-Download the latest version of the plugin JAR file from the releases section of the repository.
-Place the downloaded JAR file into the plugins directory of your Minecraft server.
+* Download the latest version of the plugin JAR file from the [releases](https://github.com/OvercastCommunity/Database/releases) section of the repository.
+* Place the downloaded Database.jar file into the plugins directory of your Minecraft server.
+* Edit the `Database/config.yml` with the proper credentials
 
-## Setup
+## Example of config.yml
+```yml
+# Database configuration
+database:
+  # JDBC URL
+  url: "jdbc:mysql://localhost:3306/minecraft"
+  # MySQL username
+  username: "user"
+  # MySQL password
+  password: "password"
+  # Maximum number of connections in the connection pool
+  max-connections: 10
+  # Timezone of database
+  timezone: "America/Los_Angeles"
+```
+
+## API Setup
 
 To utilize the Database API in your own plugin, follow these steps:
 
@@ -34,6 +51,7 @@ Add the Database plugin as a dependency in your Maven pom.xml
 </dependency>
 ```
 
+## API Example
 Below is an example of how to utilize the Database API:
 ```java
 import java.sql.Connection;
@@ -106,5 +124,5 @@ public class YourPlugin extends JavaPlugin {
 
 ## License
 
-The **Database** plugin is open source and released under the MIT License. Please review the license file for more details.
+The **Database** plugin is open source and released under the MIT License. Please review the [LICENSE](https://github.com/OvercastCommunity/Database/blob/dev/LICENSE) file for more details.
 
