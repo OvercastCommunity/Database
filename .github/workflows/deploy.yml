@@ -35,7 +35,7 @@ jobs:
           release_name: Release ${{github.sha}}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
+      - name: upload asset
         id: upload-release-asset
         if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev')
         uses: actions/upload-release-asset@v1
