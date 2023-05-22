@@ -1,0 +1,53 @@
+name: build and deploy
+on:
+  push:
+    branches: [dev]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: deployment
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: setup
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: build
+        run: mvn --batch-mode --update-snapshots verify
+      - name: rename file
+        run: mv target/Database-*.jar Database.jar
+      - name: release
+        id: create_release
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: Database-${{github.sha}}
+          release_name: Release ${{github.sha}}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Database.jar
+          asset_name: Database.jar
+          asset_content_type: application/java-archive
+      - name: deployment
+        run: mvn deploy -s settings.xml
+        env:
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
