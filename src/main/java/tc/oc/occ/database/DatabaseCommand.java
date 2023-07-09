@@ -21,5 +21,6 @@ public class DatabaseCommand extends BaseCommand {
   @Subcommand("status")
   public void status(CommandSender sender) {
     database.getConnectionPool().sendStatus(sender);
+    database.getSecondaryPool().sendStatus(sender);
   }
 }

@@ -1,5 +1,20 @@
-# Database configuration
+# Primary Database configuration
 database:
+  enabled: true  # Set to 'true' to enable this connection
+  # JDBC URL
+  url: "jdbc:mysql://localhost:3306/minecraft"
+  # MySQL username
+  username: "user"
+  # MySQL password
+  password: "password"
+  # Maximum number of connections in the connection pool
+  max-connections: 10
+  # Timezone of database
+  timezone: "America/Los_Angeles"
+
+# Secondary Database configuration
+secondary-database:
+  enabled: false  # Set to 'true' to enable this connection
   # JDBC URL
   url: "jdbc:mysql://localhost:3306/minecraft"
   # MySQL username

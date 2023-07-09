@@ -6,17 +6,25 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class ConnectionPool {
 
+  private String connectionName;
   private HikariDataSource dataSource;
 
-  public ConnectionPool(DatabaseConfig configuration) {
+  public ConnectionPool(String name, DatabaseConfig configuration) {
+    this.connectionName = name;
     reload(configuration);
   }
 
+  public boolean isEnabled() {
+    return getPool() != null;
+  }
+
+  @Nullable
   public HikariDataSource getPool() {
     return dataSource;
   }
@@ -31,6 +39,8 @@ public class ConnectionPool {
   public void reload(DatabaseConfig configuration) {
     close();
 
+    if (!configuration.isEnabled()) return;
+
     HikariConfig config = new HikariConfig();
     config.setJdbcUrl(configuration.getDatabaseURL());
     config.setUsername(configuration.getDatabaseUsername());
@@ -43,6 +53,12 @@ public class ConnectionPool {
   public void sendStatus(CommandSender sender) {
     CompletableFuture.runAsync(
         () -> {
+          if (!isEnabled()) {
+            sender.sendMessage(
+                ChatColor.AQUA + connectionName + " database" + ChatColor.RED + " is not enabled!");
+            return;
+          }
+
           try (Connection connection = dataSource.getConnection()) {
             if (connection.isValid(5000)) {
               DatabaseMetaData metaData = connection.getMetaData();

@@ -7,8 +7,12 @@ public class Database extends JavaPlugin {
 
   private static Database plugin;
 
-  private DatabaseConfig config;
+  private DatabaseConfig globalConfig;
   private ConnectionPool globalPool;
+
+  private DatabaseConfig secondaryConfig;
+  private ConnectionPool secondaryPool;
+
   private BukkitCommandManager commands;
 
   @Override
@@ -18,8 +22,11 @@ public class Database extends JavaPlugin {
     this.saveDefaultConfig();
     this.reloadConfig();
 
-    this.config = new DatabaseConfig(getConfig());
-    this.globalPool = new ConnectionPool(config);
+    this.globalConfig = new DatabaseConfig("database", getConfig());
+    this.globalPool = new ConnectionPool("primary", globalConfig);
+
+    this.secondaryConfig = new DatabaseConfig("secondary-database", getConfig());
+    this.secondaryPool = new ConnectionPool("secondary", secondaryConfig);
 
     this.commands = new BukkitCommandManager(this);
     commands.registerCommand(new DatabaseCommand());
@@ -29,13 +36,18 @@ public class Database extends JavaPlugin {
     return globalPool;
   }
 
+  public ConnectionPool getSecondaryPool() {
+    return secondaryPool;
+  }
+
   public static Database get() {
     return plugin;
   }
 
   public void reload() {
     this.reloadConfig();
-    this.config.reload(getConfig());
-    this.globalPool.reload(config);
+    this.globalConfig.reload(getConfig());
+    this.globalPool.reload(globalConfig);
+    this.secondaryConfig.reload(getConfig());
   }
 }

@@ -4,22 +4,31 @@ import org.bukkit.configuration.Configuration;
 
 public class DatabaseConfig {
 
+  private final String key;
+
+  private boolean enabled;
   private String dbURL;
   private String dbUsername;
   private String dbPassword;
   private int dbMaxConnections;
   private String dbTimezone;
 
-  public DatabaseConfig(Configuration config) {
+  public DatabaseConfig(String key, Configuration config) {
+    this.key = key;
     reload(config);
   }
 
   public void reload(Configuration config) {
-    this.dbURL = config.getString("database.url");
-    this.dbUsername = config.getString("database.username");
-    this.dbPassword = config.getString("database.password");
-    this.dbMaxConnections = config.getInt("database.max-connections");
-    this.dbTimezone = config.getString("database.timezone");
+    this.enabled = config.getBoolean(key + ".enabled");
+    this.dbURL = config.getString(key + ".url");
+    this.dbUsername = config.getString(key + ".username");
+    this.dbPassword = config.getString(key + ".password");
+    this.dbMaxConnections = config.getInt(key + ".max-connections");
+    this.dbTimezone = config.getString(key + ".timezone");
+  }
+
+  public boolean isEnabled() {
+    return enabled;
   }
 
   public String getDatabaseURL() {
