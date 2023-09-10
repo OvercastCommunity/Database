@@ -1,154 +1,158 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>tc.oc.occ</groupId>
-    <artifactId>Database</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
-    <name>Database</name>
-    <description>A shared database plugin for Overcast Community</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>tc.oc.occ</groupId>
+	<artifactId>Database</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
+	<name>Database</name>
+	<description>A shared database plugin for Overcast Community</description>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.bukkit.main>tc.oc.occ.database.Database</project.bukkit.main>
-        <project.author>applenick</project.author>
-    </properties>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.bukkit.main>tc.oc.occ.database.Database</project.bukkit.main>
+		<project.author>applenick</project.author>
+	</properties>
 
-    <distributionManagement>
-        <repository>
-            <id>pgm-repo-snapshots</id>
-            <url>https://repo.pgm.fyi/snapshots</url>
-        </repository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>pgm-repo-snapshots</id>
+			<url>https://repo.pgm.fyi/snapshots</url>
+		</repository>
+	</distributionManagement>
 
-    <repositories>
-        <repository>
-            <id>pgm-repo-snapshots</id>
-            <name>PGM Repository</name>
-            <url>https://repo.pgm.fyi/snapshots</url>
-        </repository>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/groups/aikar/</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>pgm-repo-snapshots</id>
+			<name>PGM Repository</name>
+			<url>https://repo.pgm.fyi/snapshots</url>
+		</repository>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>aikar</id>
+			<url>https://repo.aikar.co/content/groups/aikar/</url>
+		</repository>
+	</repositories>
 
-    <dependencies>
-        <!-- SportPaper 1.8 -->
-        <dependency>
-            <groupId>app.ashcon</groupId>
-            <artifactId>sportpaper</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+	<dependencies>
+		<!-- SportPaper 1.8 -->
+		<dependency>
+			<groupId>app.ashcon</groupId>
+			<artifactId>sportpaper</artifactId>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- Command Framework -->
-        <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-bukkit</artifactId>
-            <version>0.5.0-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>co.aikar</groupId>
+			<artifactId>acf-bukkit</artifactId>
+			<version>0.5.0-SNAPSHOT</version>
+		</dependency>
 
 		<!-- MySQL -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>4.0.3</version>
-        </dependency>
-        
-        <!-- Redis -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>3.5.1</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        
-    </dependencies>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>4.0.3</version>
+		</dependency>
 
-    <build>
-        <resources>
-            <!-- Include the required plugin.yml and config.yml for Bukkit -->
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+		<!-- Redis -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>3.5.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <compilerArgs>
-                        <arg>-parameters</arg> <!-- Required for aikar/commands to auto generate syntax -->
-                    </compilerArgs>
-                </configuration>
-            </plugin>
+	</dependencies>
+
+	<build>
+		<resources>
+			<!-- Include the required plugin.yml and config.yml for Bukkit -->
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<compilerArgs>
+						<arg>-parameters</arg> <!-- Required for aikar/commands
+						to auto generate syntax -->
+					</compilerArgs>
+				</configuration>
+			</plugin>
 
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.3</version>
-                <configuration>
-                 <relocations>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>tc.oc.occ.database.acf</shadedPattern>
-                        </relocation>
-                 </relocations>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <minimizeJar>true</minimizeJar>
-                    <artifactSet>
-                        <includes>
-                            <include>co.aikar:*</include>
-                            <include>com.zaxxer:*</include>
-                            <include>redis.clients:jedis</include>
-                        </includes>
-                    </artifactSet>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/**</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.3</version>
+				<configuration>
+					<relocations>
+						<relocation>
+							<pattern>co.aikar.commands</pattern>
+							<shadedPattern>tc.oc.occ.database.acf</shadedPattern>
+						</relocation>
+					</relocations>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<minimizeJar>true</minimizeJar>
+					<artifactSet>
+						<includes>
+							<include>co.aikar:*</include>
+							<include>com.zaxxer:*</include>
+							<include>redis.clients:jedis</include>
+						</includes>
+					</artifactSet>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/**</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-            <!-- Validates that code is properly formatted with Google's code style -->
-            <plugin>
-                <groupId>com.coveo</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <style>google</style>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+			<!-- Validates that code is properly formatted with Google's code
+			style -->
+			<plugin>
+				<groupId>com.coveo</groupId>
+				<artifactId>fmt-maven-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<style>google</style>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
