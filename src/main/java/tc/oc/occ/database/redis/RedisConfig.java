@@ -8,8 +8,8 @@ public class RedisConfig {
 
   private boolean enabled;
   private String host;
-  private int port;
   private String password;
+  private int port;
   private int database;
   private int timeout;
   private int maxConnections;
@@ -21,6 +21,7 @@ public class RedisConfig {
   public void reload(Configuration config) {
     this.enabled = config.getBoolean(KEY + ".enabled");
     this.host = config.getString(KEY + ".host");
+    this.password = config.getString(KEY + ".password");
     this.port = config.getInt(KEY + ".port");
     this.database = config.getInt(KEY + ".database");
     this.timeout = config.getInt(KEY + ".timeout");
