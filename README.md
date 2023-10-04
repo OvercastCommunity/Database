@@ -10,6 +10,10 @@ To install the Database plugin, follow these steps:
 * Place the downloaded Database.jar file into the plugins directory of your Minecraft server.
 * Edit the `Database/config.yml` with the proper credentials
 
+## Supported Databases
+* MySQL
+* Redis
+
 ## Example of config.yml
 ```yml
 # Database configuration
@@ -46,7 +50,7 @@ Add the Database plugin as a dependency in your Maven pom.xml
 <dependency>
     <groupId>tc.oc.occ</groupId>
     <artifactId>Database</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
 ```

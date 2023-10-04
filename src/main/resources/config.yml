@@ -1,27 +1,28 @@
 # Primary Database configuration
 database:
-  enabled: true  # Set to 'true' to enable this connection
-  # JDBC URL
-  url: "jdbc:mysql://localhost:3306/minecraft"
-  # MySQL username
-  username: "user"
-  # MySQL password
-  password: "password"
-  # Maximum number of connections in the connection pool
-  max-connections: 10
-  # Timezone of database
-  timezone: "America/Los_Angeles"
+  enabled: true                                  # Set to 'true' to enable this connection
+  url: "jdbc:mysql://localhost:3306/minecraft"   # JDBC URL
+  username: "user"                               # MySQL username
+  password: "password"                           # MySQL password
+  max-connections: 10                            # Maximum number of connections in the connection pool
+  timezone: "America/Los_Angeles"                # Timezone of database
 
-# Secondary Database configuration
+# Secondary Database Configuration
 secondary-database:
-  enabled: false  # Set to 'true' to enable this connection
-  # JDBC URL
-  url: "jdbc:mysql://localhost:3306/minecraft"
-  # MySQL username
-  username: "user"
-  # MySQL password
-  password: "password"
-  # Maximum number of connections in the connection pool
-  max-connections: 10
-  # Timezone of database
-  timezone: "America/Los_Angeles"
+  enabled: false                                # Set to 'true' to enable this connection
+  url: "jdbc:mysql://localhost:3306/minecraft"  # JDBC URL
+  username: "user"                              # MySQL username
+  password: "password"                          # MySQL password
+  max-connections: 10                           # Maximum number of connections in the connection pool
+  timezone: "America/Los_Angeles"               # Timezone of the database
+
+
+# Redis Configuration
+redis:
+  enabled: true
+  host: "localhost"       # Redis server hostname
+  port: 6379              # Redis server port
+  password: ""            # Redis password (leave empty if none set)
+  database: 0             # Redis database index 
+  timeout: 2000           # Connection timeout in milliseconds
+  max-connections: 10     # Maximum number of Redis connections
