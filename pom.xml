@@ -9,8 +9,7 @@
 	<description>A shared database plugin for Overcast Community</description>
 
 	<properties>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.bukkit.main>tc.oc.occ.database.Database</project.bukkit.main>
 		<project.author>applenick</project.author>
@@ -40,11 +39,11 @@
 	</repositories>
 
 	<dependencies>
-		<!-- SportPaper 1.8 -->
+		<!-- Intersected SportPaper 1.8-Paper 1.21.10 jar -->
 		<dependency>
-			<groupId>app.ashcon</groupId>
-			<artifactId>sportpaper</artifactId>
-			<version>1.8.8-R0.1-SNAPSHOT</version>
+			<groupId>dev.pgm.paper</groupId>
+			<artifactId>paper-api</artifactId>
+			<version>1.8_1.21.10-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -71,6 +70,20 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Annotations -->
+		<dependency>
+			<groupId>org.jspecify</groupId>
+			<artifactId>jspecify</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<!-- BungeeCord api, same as in Paper 1.21 -->
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>1.21-R0.2</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -86,7 +99,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.13.0</version>
+				<version>3.14.1</version>
 				<configuration>
 					<compilerArgs>
 						<arg>-parameters</arg> <!-- Required for aikar/commands
@@ -138,21 +151,25 @@
 
 			<!-- Validates that code is properly formatted with Google's code
 			style -->
-			<plugin>
-				<groupId>com.spotify.fmt</groupId>
-				<artifactId>fmt-maven-plugin</artifactId>
-				<version>2.27</version>
-				<configuration>
-					<style>google</style>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>com.spotify.fmt</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.27</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.googlejavaformat</groupId>
+                        <artifactId>google-java-format</artifactId>
+                        <version>1.27.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 		</plugins>
 	</build>
 

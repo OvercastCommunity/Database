@@ -6,9 +6,9 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
-import javax.annotation.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jspecify.annotations.Nullable;
 
 public class ConnectionPool {
 
