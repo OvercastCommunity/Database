@@ -16,18 +16,36 @@ To install the Database plugin, follow these steps:
 
 ## Example of config.yml
 ```yml
-# Database configuration
-database:
-  # JDBC URL
-  url: "jdbc:mysql://localhost:3306/minecraft"
-  # MySQL username
-  username: "user"
-  # MySQL password
-  password: "password"
-  # Maximum number of connections in the connection pool
+# MySQL Databases
+# You can define as many databases as needed with unique identifiers
+databases:
+  # Primary database
+  primary:
+    enabled: true
+    url: "jdbc:mysql://localhost:3306/minecraft"
+    username: "user"
+    password: "password"
+    max-connections: 10
+    timezone: "America/Los_Angeles"
+
+  # Optional: Add more databases as needed
+  stats:
+    enabled: true
+    url: "jdbc:mysql://stats-server:3306/stats"
+    username: "stats_user"
+    password: "stats_pass"
+    max-connections: 5
+    timezone: "UTC"
+
+# Redis Configuration
+redis:
+  enabled: true
+  host: "localhost"
+  port: 6379
+  password: ""
+  database: 0
+  timeout: 2000
   max-connections: 10
-  # Timezone of database
-  timezone: "America/Los_Angeles"
 ```
 
 ## API Setup
@@ -50,79 +68,124 @@ Add the Database plugin as a dependency in your Maven pom.xml
 <dependency>
     <groupId>tc.oc.occ</groupId>
     <artifactId>Database</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
 ```
 
 ## API Example
-Below is an example of how to utilize the Database API:
+
+### Modern API (v2.0+)
+Below is an example of how to utilize the new Database API:
 ```java
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 import tc.oc.occ.database.Database;
 
 public class YourPlugin extends JavaPlugin {
 
-  private Logger logger;
   private ExecutorService executorService;
 
   @Override
   public void onEnable() {
     this.executorService = Executors.newFixedThreadPool(5);
-    createTable("test", "id INT PRIMARY KEY, some_col VARCHAR(65),");
+    createTable("test", "id INT PRIMARY KEY, some_col VARCHAR(65)");
   }
 
-  private Connection getConnection() throws SQLException {
-    return Database.get().getConnectionPool().getPool().getConnection();
+  @Override
+  public void onDisable() {
+    if (executorService != null) {
+      executorService.shutdown();
+    }
   }
 
   private void createTable(String table, String schema) {
-    CompletableFuture.runAsync(
-        () -> {
-          try (Connection connection = getConnection();
-              Statement statement = connection.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS " + table + " (" + schema + ");";
-            statement.execute(sql);
-            logger.info("Created table: " + table);
-          } catch (SQLException e) {
-            logger.warning("Error creating table " + table + ": " + e.getMessage());
-          }
-        },
-        executorService);
+    CompletableFuture.runAsync(() -> {
+      // Get connection from default database (first enabled database)
+      Optional<Connection> connOpt = Database.get().getConnection();
+      if (!connOpt.isPresent()) {
+        getLogger().warning("Database is not available!");
+        return;
+      }
+
+      try (Connection conn = connOpt.get();
+           Statement stmt = conn.createStatement()) {
+        String sql = "CREATE TABLE IF NOT EXISTS " + table + " (" + schema + ")";
+        stmt.execute(sql);
+        getLogger().info("Created table: " + table);
+      } catch (SQLException e) {
+        getLogger().warning("Error creating table " + table + ": " + e.getMessage());
+      }
+    }, executorService);
   }
 
   public CompletableFuture<String> getStringFromTestTable(int id) {
-    return CompletableFuture.supplyAsync(
-        () -> {
-          final String sql = "SELECT * FROM test WHERE id = ?";
-          try (Connection connection = getConnection();
-              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+    return CompletableFuture.supplyAsync(() -> {
+      // Get connection from default database
+      Optional<Connection> connOpt = Database.get().getConnection();
+      if (!connOpt.isPresent()) {
+        return null;
+      }
 
-            try (ResultSet result = statement.executeQuery()) {
-              if (result.next()) {
-                String testString = result.getString("some_col");
-                return testString;
-              }
-            }
+      final String sql = "SELECT * FROM test WHERE id = ?";
+      try (Connection conn = connOpt.get();
+           PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, id);
 
-          } catch (SQLException e) {
-            logger.warning("Database issue while fetching string from test table");
-            e.printStackTrace();
+        try (ResultSet result = stmt.executeQuery()) {
+          if (result.next()) {
+            return result.getString("some_col");
           }
-          return null;
-        },
-        executorService);
+        }
+      } catch (SQLException e) {
+        getLogger().warning("Database issue: " + e.getMessage());
+      }
+      return null;
+    }, executorService);
   }
+
+  // Example: Using a specific named database
+  public void saveToStatsDatabase(int playerId, int score) {
+    CompletableFuture.runAsync(() -> {
+      // Get connection from the "stats" database
+      Optional<Connection> connOpt = Database.get().getConnection("stats");
+      if (!connOpt.isPresent()) {
+        getLogger().warning("Stats database is not available!");
+        return;
+      }
+
+      try (Connection conn = connOpt.get();
+           PreparedStatement stmt = conn.prepareStatement(
+               "INSERT INTO player_stats (player_id, score) VALUES (?, ?)")) {
+        stmt.setInt(1, playerId);
+        stmt.setInt(2, score);
+        stmt.executeUpdate();
+      } catch (SQLException e) {
+        getLogger().warning("Failed to save stats: " + e.getMessage());
+      }
+    }, executorService);
+  }
+}
+```
+
+### Legacy API (v1.x) - Deprecated
+The old API still works for backwards compatibility but is deprecated:
+```java
+// Old way (deprecated)
+Connection conn = Database.get().getConnectionPool().getPool().getConnection();
+
+// New way (recommended)
+Optional<Connection> conn = Database.get().getConnection();
+// or for a specific database:
+Optional<Connection> statsConn = Database.get().getConnection("stats");
 ```
 
 

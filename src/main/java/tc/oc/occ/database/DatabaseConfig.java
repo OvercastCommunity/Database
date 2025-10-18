@@ -1,10 +1,10 @@
 package tc.oc.occ.database;
 
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class DatabaseConfig {
 
-  private final String key;
+  private final String id;
 
   private boolean enabled;
   private String dbURL;
@@ -13,18 +13,22 @@ public class DatabaseConfig {
   private int dbMaxConnections;
   private String dbTimezone;
 
-  public DatabaseConfig(String key, Configuration config) {
-    this.key = key;
-    reload(config);
+  public DatabaseConfig(String id, ConfigurationSection section) {
+    this.id = id;
+    reload(section);
   }
 
-  public void reload(Configuration config) {
-    this.enabled = config.getBoolean(key + ".enabled");
-    this.dbURL = config.getString(key + ".url");
-    this.dbUsername = config.getString(key + ".username");
-    this.dbPassword = config.getString(key + ".password");
-    this.dbMaxConnections = config.getInt(key + ".max-connections");
-    this.dbTimezone = config.getString(key + ".timezone");
+  public void reload(ConfigurationSection section) {
+    this.enabled = section.getBoolean("enabled");
+    this.dbURL = section.getString("url");
+    this.dbUsername = section.getString("username");
+    this.dbPassword = section.getString("password");
+    this.dbMaxConnections = section.getInt("max-connections");
+    this.dbTimezone = section.getString("timezone");
+  }
+
+  public String getId() {
+    return id;
   }
 
   public boolean isEnabled() {

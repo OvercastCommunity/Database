@@ -1,21 +1,33 @@
-# Primary Database configuration
-database:
-  enabled: true                                  # Set to 'true' to enable this connection
-  url: "jdbc:mysql://localhost:3306/minecraft"   # JDBC URL
-  username: "user"                               # MySQL username
-  password: "password"                           # MySQL password
-  max-connections: 10                            # Maximum number of connections in the connection pool
-  timezone: "America/Los_Angeles"                # Timezone of database
+# MySQL Databases
+# You can define as many databases as needed with unique identifiers
+# Databases are loaded in the order they appear (first enabled database becomes default)
+databases:
+  # Primary database
+  primary:
+    enabled: true                                  # Set to 'true' to enable this connection
+    url: "jdbc:mysql://localhost:3306/minecraft"   # JDBC URL
+    username: "user"                               # MySQL username
+    password: "password"                           # MySQL password
+    max-connections: 10                            # Maximum number of connections in the pool
+    timezone: "America/Los_Angeles"                # Timezone of database
 
-# Secondary Database Configuration
-secondary-database:
-  enabled: false                                # Set to 'true' to enable this connection
-  url: "jdbc:mysql://localhost:3306/minecraft"  # JDBC URL
-  username: "user"                              # MySQL username
-  password: "password"                          # MySQL password
-  max-connections: 10                           # Maximum number of connections in the connection pool
-  timezone: "America/Los_Angeles"               # Timezone of the database
+  # Secondary database (optional - you can remove this if not needed)
+  secondary:
+    enabled: false                                # Set to 'true' to enable this connection
+    url: "jdbc:mysql://localhost:3306/minecraft"  # JDBC URL
+    username: "user"                              # MySQL username
+    password: "password"                          # MySQL password
+    max-connections: 10                           # Maximum number of connections in the pool
+    timezone: "America/Los_Angeles"               # Timezone of the database
 
+  # Example: Stats database (you can add as many databases as needed)
+  # stats:
+  #   enabled: false
+  #   url: "jdbc:mysql://stats-server:3306/stats"
+  #   username: "stats_user"
+  #   password: "stats_pass"
+  #   max-connections: 5
+  #   timezone: "UTC"
 
 # Redis Configuration
 redis:
@@ -23,6 +35,6 @@ redis:
   host: "localhost"       # Redis server hostname
   port: 6379              # Redis server port
   password: ""            # Redis password (leave empty if none set)
-  database: 0             # Redis database index 
+  database: 0             # Redis database index
   timeout: 2000           # Connection timeout in milliseconds
   max-connections: 10     # Maximum number of Redis connections
