@@ -42,6 +42,22 @@ public class Database extends JavaPlugin {
     commands.registerCommand(new DatabaseCommand());
   }
 
+  @Override
+  public void onDisable() {
+    if (commands != null) {
+      commands.unregisterCommands();
+    }
+    if (globalPool != null) {
+      globalPool.close();
+    }
+    if (secondaryPool != null) {
+      secondaryPool.close();
+    }
+    if (redisPool != null) {
+      redisPool.shutdown();
+    }
+  }
+
   public ConnectionPool getConnectionPool() {
     return globalPool;
   }
