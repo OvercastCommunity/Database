@@ -1,6 +1,7 @@
 package tc.oc.occ.database;
 
 import co.aikar.commands.BukkitCommandManager;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -13,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
 import tc.oc.occ.database.redis.RedisConfig;
 import tc.oc.occ.database.redis.RedisPool;
-import com.zaxxer.hikari.HikariDataSource;
 
 public class Database extends JavaPlugin {
 
