@@ -25,13 +25,15 @@ jobs:
         run: mvn --batch-mode --update-snapshots verify
       - name: rename artifact
         run: mv target/Database-*.jar Database.jar
+      - name: set short sha
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
       - name: create release
         id: create_release
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: Database-${{ github.sha }}
-          name: Release ${{ github.sha }}
+          tag_name: Database-${{ env.SHORT_SHA }}
+          name: Release ${{ env.SHORT_SHA }}
           draft: false
           prerelease: false
           files: Database.jar
