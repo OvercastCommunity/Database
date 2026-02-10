@@ -12,6 +12,7 @@
 		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.bukkit.main>tc.oc.occ.database.Database</project.bukkit.main>
+        <project.paper.api>1.21.11</project.paper.api>
 		<project.author>applenick</project.author>
 	</properties>
 
@@ -25,13 +26,12 @@
 	<repositories>
 		<repository>
 			<id>pgm-repo-snapshots</id>
-			<name>PGM Repository</name>
 			<url>https://repo.pgm.fyi/snapshots</url>
 		</repository>
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
 		<repository>
 			<id>aikar</id>
 			<url>https://repo.aikar.co/content/groups/aikar/</url>
@@ -39,11 +39,11 @@
 	</repositories>
 
 	<dependencies>
-		<!-- Intersected SportPaper 1.8-Paper 1.21.10 jar -->
+		<!-- Bukkit/Paper API -->
 		<dependency>
 			<groupId>dev.pgm.paper</groupId>
 			<artifactId>paper-api</artifactId>
-			<version>1.8_1.21.10-SNAPSHOT</version>
+			<version>1.8_1.21.11-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -107,8 +107,18 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
-
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <paperweight-mappings-namespace>mojang</paperweight-mappings-namespace>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -148,9 +158,23 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- Validates that code is properly formatted with Google's code
-			style -->
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>9.0.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.spotify.fmt</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>

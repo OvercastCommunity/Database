@@ -1,5 +1,6 @@
 name: ${project.name}
 description: ${project.description}
 main: ${project.bukkit.main}
-version: ${project.version}
+version: ${project.version} (git-${git.commit.id.abbrev})
+api-version: ${project.paper.api}
 author: ${project.author}
