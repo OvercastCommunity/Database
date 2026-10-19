@@ -142,7 +142,25 @@
 					</artifactSet>
 					<filters>
 						<filter>
-							<artifact>*:*</artifact>
+							<artifact>co.aikar:*</artifact>
+							<excludes>
+								<exclude>META-INF/**</exclude>
+							</excludes>
+						</filter>
+						<filter>
+							<artifact>com.zaxxer:*</artifact>
+							<excludes>
+								<exclude>META-INF/**</exclude>
+							</excludes>
+						</filter>
+						<filter>
+							<artifact>redis.clients:jedis</artifact>
+							<excludes>
+								<exclude>META-INF/**</exclude>
+							</excludes>
+						</filter>
+						<filter>
+							<artifact>org.apache.commons:commons-pool2</artifact>
 							<excludes>
 								<exclude>META-INF/**</exclude>
 							</excludes>
